@@ -41,7 +41,7 @@ if 'logged_in' not in st.session_state:
 
 def login(username, password):
     # Login sederhana, gunakan metode autentikasi yang tepat di aplikasi nyata
-    if username == "admin" dan password == "admin":
+    if username == "admin" and password == "admin":
         st.session_state.logged_in = True
         st.session_state.username = username
         st.success("Login berhasil!")
