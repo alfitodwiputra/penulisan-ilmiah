@@ -5,6 +5,7 @@ import pytz
 import streamlit as st
 from sqlalchemy import create_engine, Column, Integer, String, Float, Table, MetaData, DateTime
 from sqlalchemy.orm import sessionmaker
+from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 import settings
 import helper
 
@@ -136,7 +137,25 @@ else:
                             st.error(ex)
 
         elif source_radio == settings.WEBCAM:
-            helper.play_webcam(confidence, model)
+            webrtc_ctx = webrtc_streamer(
+                key="example",
+                mode=WebRtcMode.SENDRECV,
+                rtc_configuration=RTCConfiguration({
+                    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+                }),
+                media_stream_constraints={
+                    "video": True,
+                    "audio": False
+                }
+            )
+
+            if webrtc_ctx.video_receiver:
+                try:
+                    image = webrtc_ctx.video_receiver.get_frame().to_ndarray(format="bgr24")
+                    st_frame = st.empty()
+                    helper.display_webrtc_frames(confidence, model, st_frame, image)
+                except Exception as e:
+                    st.error("Error processing video frame: " + str(e))
 
         # CSS tambahan
         st.markdown("""
