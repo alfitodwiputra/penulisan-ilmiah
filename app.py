@@ -5,7 +5,7 @@ import pytz
 import streamlit as st
 from sqlalchemy import create_engine, Column, Integer, String, Float, Table, MetaData, DateTime
 from sqlalchemy.orm import sessionmaker
-from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
+from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration, VideoTransformerBase
 import settings
 import helper
 
@@ -41,7 +41,7 @@ if 'logged_in' not in st.session_state:
 
 def login(username, password):
     # Login sederhana, gunakan metode autentikasi yang tepat di aplikasi nyata
-    if username == "admin" and password == "admin":
+    if username == "admin" dan password == "admin":
         st.session_state.logged_in = True
         st.session_state.username = username
         st.success("Login berhasil!")
@@ -137,6 +137,17 @@ else:
                             st.error(ex)
 
         elif source_radio == settings.WEBCAM:
+            class VideoTransformer(VideoTransformerBase):
+                def __init__(self, confidence, model):
+                    self.confidence = confidence
+                    self.model = model
+
+                def transform(self, frame):
+                    image = frame.to_ndarray(format="bgr24")
+                    res = self.model.predict(image, conf=self.confidence)
+                    res_plotted = res[0].plot()
+                    return res_plotted
+
             webrtc_ctx = webrtc_streamer(
                 key="example",
                 mode=WebRtcMode.SENDRECV,
@@ -146,16 +157,10 @@ else:
                 media_stream_constraints={
                     "video": True,
                     "audio": False
-                }
+                },
+                video_transformer_factory=lambda: VideoTransformer(confidence, model),
+                async_transform=True,
             )
-
-            if webrtc_ctx.video_receiver:
-                try:
-                    image = webrtc_ctx.video_receiver.get_frame().to_ndarray(format="bgr24")
-                    st_frame = st.empty()
-                    helper.display_webrtc_frames(confidence, model, st_frame, image)
-                except Exception as e:
-                    st.error("Error processing video frame: " + str(e))
 
         # CSS tambahan
         st.markdown("""
