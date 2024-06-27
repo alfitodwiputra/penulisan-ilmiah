@@ -25,7 +25,7 @@ UPLOADED_IMAGES_DIR = IMAGES_DIR / 'uploaded'
 
 # Konfigurasi model ML
 MODEL_DIR = ROOT / 'weights'
-DETECTION_MODEL = MODEL_DIR / 'dataset_kopi_fix.pt'
+DETECTION_MODEL = MODEL_DIR / 'Dataset_kopi_fix.pt'
 
 # Konfigurasi Webcam
 WEBCAM_PATH = 0
