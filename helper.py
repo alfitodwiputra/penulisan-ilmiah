@@ -14,18 +14,6 @@ def _display_detected_frames(conf, model, st_frame, image):
     res_plotted = res[0].plot()
     st_frame.image(res_plotted, caption='Detected Video', channels="BGR", use_column_width=True)
 
-def play_webcam(conf, model):
-    # Memutar webcam dan mendeteksi objek
-    if st.sidebar.button('Detect Objects'):
-        try:
-            vid_cap = cv2.VideoCapture(source_webcam)
-            st_frame = st.empty()
-            while vid_cap.isOpened():
-                success, image = vid_cap.read()
-                if success:
-                    _display_detected_frames(conf, model, st_frame, image)
-                else:
-                    vid_cap.release()
-                    break
-        except Exception as e:
-            st.sidebar.error("Error loading video: " + str(e))
+def display_webrtc_frames(conf, model, st_frame, image):
+    # Menampilkan frame yang terdeteksi untuk webrtc
+    _display_detected_frames(conf, model, st_frame, image)
