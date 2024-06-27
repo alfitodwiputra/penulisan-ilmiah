@@ -28,4 +28,4 @@ MODEL_DIR = ROOT / 'weights'
 DETECTION_MODEL = MODEL_DIR / 'Dataset_kopi_fix.pt'
 
 # Konfigurasi Webcam
-WEBCAM_PATH = 2
+WEBCAM_PATH = '/dev/video0'
