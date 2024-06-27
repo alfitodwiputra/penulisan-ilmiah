@@ -18,7 +18,7 @@ def play_webcam(conf, model):
     # Memutar webcam dan mendeteksi objek
     if st.sidebar.button('Detect Objects'):
         try:
-            vid_cap = cv2.VideoCapture(settings.WEBCAM_PATH)
+            vid_cap = cv2.VideoCapture(0)
             st_frame = st.empty()
             while vid_cap.isOpened():
                 success, image = vid_cap.read()
