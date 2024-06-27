@@ -1,4 +1,4 @@
-opencv_python==4.9.0.80
+opencv-python-headless
 Pillow==10.3.0
 pytz==2024.1
 SQLAlchemy==2.0.30
