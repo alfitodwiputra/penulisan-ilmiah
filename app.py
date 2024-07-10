@@ -76,7 +76,7 @@ else:
     if st.session_state.page == "Deteksi":
         st.sidebar.subheader("Konfigurasi Model ML")
         model_type = st.sidebar.radio("Pilih Tugas", ['Deteksi'])
-        confidence = float(st.sidebar.slider("Pilih Tingkat Keyakinan Model", 0, 100, 40)) / 100
+        confidence = float(st.sidebar.slider("Pilih Tingkat Keyakinan Model (%)", 0, 100, 40)) / 100
         model_path = Path(settings.DETECTION_MODEL)
 
         try:
